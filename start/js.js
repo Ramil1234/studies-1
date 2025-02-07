@@ -57,7 +57,6 @@ function displayMovements(movements) {
   movements.forEach(function (value, index) {
     const classHTML =
       value >= 0 ? ["deposit", "зачисление"] : ["withdrawal", "Снятие"];
-    console.log(classHTML);
     const inHTML = `        <div class="movements__row">
             <div class="movements__type movements__type--${classHTML[0]}">
             ${index + 1} ${classHTML[1]}
@@ -69,3 +68,12 @@ function displayMovements(movements) {
   });
 }
 displayMovements(account2.movements);
+function addLogIn(accs) {
+  accs.forEach(function(acc) {
+    acc.logIn = acc.owner.toLowerCase().split(' ').map(function(val) {
+      return val[0]
+    }).join('')
+  })
+}
+addLogIn(accounts)
+console.log(accounts)
