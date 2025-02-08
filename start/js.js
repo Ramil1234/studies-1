@@ -77,3 +77,12 @@ function addLogIn(accs) {
 }
 addLogIn(accounts)
 console.log(accounts)
+
+function sum(acc) {
+  console.log(labelBalance.innerHTML)
+  const sum = acc.movements.reduce(function(sum, val) {
+    return sum + val
+  })
+  labelBalance.textContent = sum
+}
+sum(account3)
