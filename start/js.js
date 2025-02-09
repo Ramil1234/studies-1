@@ -76,13 +76,59 @@ function addLogIn(accs) {
   })
 }
 addLogIn(accounts)
-console.log(accounts)
-
+let sumNum = 0
 function sum(acc) {
-  console.log(labelBalance.innerHTML)
-  const sum = acc.movements.reduce(function(sum, val) {
+  sumNum = acc.movements.reduce(function(sum, val) {
     return sum + val
   })
-  labelBalance.textContent = sum
+  labelBalance.textContent = sumNum
+  labelSumInterest.textContent = sumNum
+  console.log(account4)
+  labelSumOut.textContent = acc.movements.filter((num) => num < 0).reduce((sum, val) => sum + val,0)
+  labelSumIn.textContent = acc.movements.filter((num) => num > 0).reduce((sum, val) => sum + val,0)
 }
-sum(account3)
+let userCheckGl = 0;
+btnLogin.addEventListener('click', (e) => {
+  e.preventDefault()
+  const userName = inputLoginUsername.value
+  console.log(userName)
+  userCheckGl = accounts.find((user) => user.logIn == userName)
+  if (userCheckGl && userCheckGl.pin == inputLoginPin.value) {
+    containerApp.style.opacity = 1
+    displayMovements(userCheckGl.movements)
+    sum(userCheckGl)
+  };
+})
+btnTransfer.addEventListener('click', (e) => {
+  e.preventDefault()
+  const transferTo = inputTransferTo.value
+  console.log(transferTo)
+  const userCheck = accounts.find((user) => user.logIn == transferTo)
+  const transferAmount = inputTransferAmount.value
+  console.log(sumNum) 
+  if (userCheck && transferAmount <= sumNum) {
+    userCheck.movements.push(Number(transferAmount)) 
+    userCheckGl.movements.push(Number(-transferAmount))
+    sum(userCheck) 
+    sum(userCheckGl)
+    displayMovements(userCheckGl.movements)
+  }
+
+})
+
+btnLoan.addEventListener('click', (e) => {
+  e.preventDefault(userCheckGl)
+  userCheckGl.movements.push(Number(inputLoanAmount.value))
+  sum(userCheckGl)
+  displayMovements(userCheckGl.movements)
+})
+
+btnClose.addEventListener('click', (e) => { 
+  e.preventDefault()
+  if ((inputCloseUsername.value == userCheckGl.logIn) && (inputClosePin.value == userCheckGl.pin)) {
+    accounts.splice(accounts.findIndex(function(acc) {
+      return userCheckGl.logIn
+    } ), 1)
+    containerApp.style.opacity = 0
+  }
+})
